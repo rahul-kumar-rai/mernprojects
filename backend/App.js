@@ -9,7 +9,7 @@ export const app = express();
 
 // Middleware
 app.use(cors({
-    origin: "*", // Allow requests from the specified origin or frontend URL
+    origin: "http://localhost:3000", // Allow requests from the specified origin or frontend URL
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
