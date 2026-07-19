@@ -6,9 +6,7 @@ export const apiTesting = async (req, res) => {
     try {
         const datadb = await UserModel.findOne({name})
 
-        res.json({ message: "api working fine" },{
-            name,
-        });
+        res.json({ message: "api working fine" , name});
 
     } catch (error) {
         console.log("ERROR API:", error);
