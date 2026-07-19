@@ -5,20 +5,17 @@ import JWT from "jsonwebtoken";
 // Test MongoDB Connection
 export const apiTesting = async (req, res) => {
   try {
-    const count = await UserModel.countDocuments();
-
     return res.status(200).json({
       success: true,
-      message: "MongoDB connected successfully",
-      totalUsers: count,
-      timestamp: new Date().toISOString(),
+      MONGODB_URI: !!process.env.MONGODB_URI,
+      JWT_KEY: !!process.env.JWT_KEY,
+      nodeEnv: process.env.NODE_ENV,
     });
   } catch (error) {
-    console.error("ERROR API:", error);
+    console.error(error);
 
     return res.status(500).json({
       success: false,
-      message: "MongoDB connection failed",
       error: error.message,
     });
   }
