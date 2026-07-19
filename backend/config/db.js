@@ -22,7 +22,7 @@ const connectDB = async () => {
       socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     };
 
-    cached.promise = mongoose
+    cached.promise = await mongoose
       .connect(process.env.MONGODB_URI, opts)
       .then((mongoose) => {
         console.log("MongoDB Connected successfully");
