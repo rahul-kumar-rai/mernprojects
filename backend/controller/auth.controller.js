@@ -4,7 +4,12 @@ import JWT from "jsonwebtoken";
 
 export const apiTesting = async (req, res) => {
     try {
-        res.json({ message: "api working fine" });
+        const datadb = await UserModel.findOne({name})
+
+        res.json({ message: "api working fine" },{
+            name,
+        });
+
     } catch (error) {
         console.log("ERROR API:", error);
         return res.status(500).json({ error: "API error" });
