@@ -48,4 +48,5 @@ export default app;
 - controllers from received all the data from forntend
 - check data receiving form forntend 
 - validate all the fields (email , passowrd , name, emty)
+- add register users with validation (jwt , bcrypt etc)
 - 
