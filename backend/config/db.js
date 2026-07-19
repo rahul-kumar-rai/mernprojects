@@ -1,48 +1,40 @@
 import mongoose from "mongoose";
 
-// Cache the connection to reuse across serverless function invocations
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = global.mongoose = {
+    conn: null,
+    promise: null,
+  };
 }
 
 const connectDB = async () => {
-  // If connection exists, return it
-  if (cached.conn) {
-    return cached.conn;
-  }
-
-  // If connection is in progress, wait for it
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-      maxPoolSize: 10, // Maintain up to 10 socket connections
-      serverSelectionTimeoutMS: 10000, // Keep trying to send operations for 5 seconds
-      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-    };
-
-    cached.promise = await mongoose
-      .connect(process.env.MONGODB_URI, opts)
-      .then((mongoose) => {
-        console.log("MongoDB Connected successfully");
-        return mongoose;
-      })
-      .catch((error) => {
-        console.error("MongoDB connection error:", error);
-        cached.promise = null; // Reset promise on error
-        throw error;
-      });
-  }
-
   try {
+    if (cached.conn) {
+      return cached.conn;
+    }
+
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI is missing");
+    }
+
+    if (!cached.promise) {
+      cached.promise = mongoose.connect(process.env.MONGODB_URI, {
+        bufferCommands: false,
+        maxPoolSize: 10,
+        serverSelectionTimeoutMS: 10000,
+      });
+    }
+
     cached.conn = await cached.promise;
+
+    console.log("✅ MongoDB Connected");
+    return cached.conn;
   } catch (error) {
-    cached.promise = null;
+    console.error("❌ MongoDB Connection Error:", error);
     throw error;
   }
-
-  return cached.conn;
 };
 
 export default connectDB;
