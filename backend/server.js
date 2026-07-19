@@ -38,13 +38,10 @@ app.use("/api/auth", authRouters);
 
 
 
-
-connectDB();
-
 if(process.env.NODE_ENV === "developments"){
 
-    app.listen(PORT, () => {
-        
+    app.listen(PORT, async() => {
+        await connectDB();
         console.log(`Server is running on port ${PORT}`);
     
     });

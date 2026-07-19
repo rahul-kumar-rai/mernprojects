@@ -43,8 +43,6 @@ export const loginUsers = async (req, res) => {
         // ✅ Check if user already exists in database
         const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
-
-
             return res.status(400).json({
                 success: false,
                 message: 'User already exists with this email',
