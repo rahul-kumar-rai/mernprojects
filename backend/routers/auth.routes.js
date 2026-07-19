@@ -1,9 +1,9 @@
 import express from "express";
-import { Error } from "mongoose";
-import { apiTesting } from "../controller/auth.controller.js";
+import { apiTesting, loginUsers } from "../controller/auth.controller.js";
 
 const authRouters = express.Router();
 
 authRouters.get('/test', apiTesting)
+authRouters.post('/login', loginUsers);
 
 export default authRouters;

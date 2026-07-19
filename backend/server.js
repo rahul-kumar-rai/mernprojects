@@ -15,12 +15,26 @@ export const app = express();
 app.use(cors({
     origin: "http://localhost:3000", // Allow requests from the specified origin or frontend URL
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json({ limit: '10mb' }));
+
+// Or with Express built-in
+app.use(express.json({ limit: '10mb' }));
+
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-app.use("/api/auth", authRouters)
+
+app.post('/api/data', (req, res) => {
+  // req.body should already be parsed as an object
+  console.log(req.body); // This is an object, not a string
+  res.json({ received: req.body });
+});
+
+
+app.use("/api/auth", authRouters);
+
 
 
 
